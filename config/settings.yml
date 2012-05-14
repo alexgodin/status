@@ -1,0 +1,3 @@
+domain: 'dispatch.io'
+default_password: 'showandtell'
+url: 'dispatchstatusapp.heroku.com'

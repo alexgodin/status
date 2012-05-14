@@ -1,0 +1,21 @@
+class Update < ActiveRecord::Base
+  attr_accessible :body, :employee_id
+  belongs_to :user
+
+  def create_from_postmark(email)
+    if email.from_email.match /@#{Settings.domain}/
+      update = new
+      email = Postmark::Mitt.new(request)
+      unless email.html_body
+        update.body = email.text_body
+      else
+        update.body = email.html_body
+      end
+      update.user = User.find_or_create_by_email(email.from_email)
+      update.save
+      update
+    else
+      return false
+    end
+  end
+end
